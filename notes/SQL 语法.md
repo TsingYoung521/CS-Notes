@@ -423,6 +423,24 @@ SELECT cust_name, (SELECT COUNT(*)
                    AS orders_num
 FROM Customers
 ORDER BY cust_name;
+
+# 内连接实现
+SELECT cust_name, COUNT(Orders.order_id) AS orders_num
+FROM Customers INNER JOIN Orders 
+ON Customers.cust_id = Orders.cust_id
+GROUP BY Customers.cust_id;
+
+# 也可以这样实现
+SELECT cust_name, COUNT(Orders.order_id) AS orders_num
+FROM Customers, Orders 
+WHERE Customers.cust_id = Orders.cust_id
+GROUP BY Customers.cust_id;
+
+# 如果想包含没有订单的客户（即 orders_num 显示为 0 而不是排除），可以用 LEFT JOIN：
+SELECT cust_name, COUNT(Orders.order_id) AS orders_num
+FROM Customers LEFT JOIN Orders 
+ON Customers.cust_id = Orders.cust_id
+GROUP BY Customers.cust_id;
 ```
 
 ## 十五、连接
